@@ -19,11 +19,11 @@ Rotate the coordinate space so that `dir` becomes aligned with horizontal axis `
 
 ## Determine forbidden regions
 
-After rotation, the infinite line becomes aligned with horizontal axis `(1, 0)`, and each circle now takes an interval `(a, b)` where `a = y' - radius` and `b = y' + radius`.
+After rotation, the infinite line becomes aligned with horizontal axis `(1, 0)`, and each circle now occupies an interval `(top, bottom)` where `top = y' - radius` and `bottom = y' + radius`.
 
 1. Map `circles` to `intervals`
 
-Create an `intervals` array. For each circle in `circles`, map it to an interval as follows: `(x', y', radius)` -> `(a = y' - radius, b = y' + radius)`.
+Create an `intervals` array. For each circle in `circles`, map it to an interval as follows: `(x', y', radius)` -> `(top = y' - radius, bottom = y' + radius)`.
 
 ```
 intervals[0] === (4, 6)
@@ -41,7 +41,7 @@ intervals[2] === (5, 7)
 
 3. Unite intersecting intervals
 
-Create an `intersections` dynamic array. For intersections containing intervals in range `[n, m]`, add a new intersection to `intersections`, defined as follows: `(intervals[n].a, intervals[m].b)`.
+Create an `intersections` dynamic array. For intersections containing intervals in range `[n, m]`, add a new intersection to `intersections`, defined as follows: `(intervals[n].top, intervals[m].bottom)`.
 
 ```
 intersections[0] === (1, 3)
@@ -51,12 +51,12 @@ intersections[1] === (4, 7)
 Explanation:
 
 - Interval `0` does not intersect with any other interval, so leave as is.
-- Intervals `1` and `2` intersect each other so unite them as follows: `(intervals[1].a, intervals[2].b)`
+- Intervals `1` and `2` intersect each other so unite them as follows: `(intervals[1].top, intervals[2].bottom)`
 
 ## Find gap, if exists
 
-For each sequential pair of intersections `left` and `right` in `intersections`:
+For each sequential pair of intersections `prev` and `next` in `intersections`:
 
-1. Calculate `gap` value as follows: `right.b - left.a`
+1. Calculate `gap` value as follows: `next.bottom - prev.top`
 2. If `gap` is less than `width`, return `true`; otherwise, move to the next pair and proceed with step 1
 3. If end of `intersections` reached, return `false`
