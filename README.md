@@ -12,5 +12,7 @@ Determine whether there exists an infinite line of width `width` aligned with `d
 
 ## Rotate world space
 
+Rotate the coordinate space so that `dir` becomes aligned with horizontal axis `(1, 0)`.
+
 1. Calculate angle `angle` of `dir`
-2. Rotate each circle in `circles` by `angle`
+2. Rotate `(x, y)` of each circle in `circles` by `angle`, store as `(x', y')` (reassign the values in each circle, or create new array `circles'` containing newly calculated values `(x', y', r)`, depending on task case)
