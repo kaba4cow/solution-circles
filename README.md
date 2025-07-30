@@ -17,7 +17,7 @@ Rotate the coordinate space so that `dir` becomes aligned with horizontal axis `
 1. Calculate angle `angle` of `dir`
 2. Rotate `(x, y)` of each circle in `circles` by `angle`, store as `(x', y')`
 
-## Determine circle intervals
+## Determine forbidden regions
 
 After rotation, the infinite line becomes aligned with horizontal axis `(1, 0)`, and each circle now takes an interval `(a, b)` where `a = y' - radius` and `b = y' + radius`.
 
