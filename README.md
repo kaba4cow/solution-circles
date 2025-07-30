@@ -10,7 +10,7 @@ Determine whether there exists an infinite line of width `width` aligned with `d
 
 # Solution
 
-## Normalize world space
+## Rotate world space
 
 1. Calculate angle `angle` of `dir`
 2. Rotate each circle in `circles` by `angle`
