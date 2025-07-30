@@ -16,3 +16,39 @@ Rotate the coordinate space so that `dir` becomes aligned with horizontal axis `
 
 1. Calculate angle `angle` of `dir`
 2. Rotate `(x, y)` of each circle in `circles` by `angle`, store as `(x', y')`
+
+## Determine 'forbidden' regions
+
+After rotation, the infinite line becomes aligned with horizontal axis `(1, 0)`, and each circle now takes an interval `(a, b)` where `a = y' - radius` and `b = y' + radius`.
+
+1. Map `circles` to `intervals`
+
+Create an `intervals` array. For each circle in `circles`, map it to an interval as follows: `(x', y', radius)` -> `(a = y' - radius, b = y' + radius)`.
+
+```
+intervals[0] === (4, 6)
+intervals[1] === (1, 3)
+intervals[2] === (5, 7)
+```
+
+2. Sort `intervals` by `a` coordinate
+
+```
+intervals[0] === (1, 3)
+intervals[1] === (4, 6)
+intervals[2] === (5, 7)
+```
+
+3. Unite intersecting intervals
+
+Create an `intersections` dynamic array. For intersections containing intervals in range `[n, m]`, add the intersection to `intersections`, defined as follows: `(intervals[n].a, intervals[m].b)`.
+
+```
+intersections[0] === (1, 3)
+intersections[1] === (4, 7)
+```
+
+Explanation:
+
+- Interval `0` does not intersect with any other interval, so leave as is.
+- Intervals `1` and `2` intersect each other so unite them as follows: `(intervals[1].a, intervals[2].b)`
