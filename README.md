@@ -53,7 +53,7 @@ Explanation:
 - Interval `0` does not intersect with any other interval, so leave as is.
 - Intervals `1` and `2` intersect each other so unite them as follows: `(intervals[1].top, intervals[2].bottom)`
 
-## Find gap, if exists
+## Find a valid gap
 
 For each sequential pair of intersections `prev` and `next` in `intersections`:
 
