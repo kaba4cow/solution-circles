@@ -41,7 +41,7 @@ intervals[2] === (5, 7)
 
 3. Unite intersecting intervals
 
-Create an `intersections` dynamic array. For intersections containing intervals in range `[n, m]`, add the intersection to `intersections`, defined as follows: `(intervals[n].a, intervals[m].b)`.
+Create an `intersections` dynamic array. For intersections containing intervals in range `[n, m]`, add a new intersection to `intersections`, defined as follows: `(intervals[n].a, intervals[m].b)`.
 
 ```
 intersections[0] === (1, 3)
@@ -52,3 +52,11 @@ Explanation:
 
 - Interval `0` does not intersect with any other interval, so leave as is.
 - Intervals `1` and `2` intersect each other so unite them as follows: `(intervals[1].a, intervals[2].b)`
+
+## Find gap, if exists
+
+For each sequential pair of intersections `left` and `right` in `intersections`:
+
+1. Calculate `gap` value as follows: `right.b - left.a`
+2. If `gap` is less than `width`, return `true`; otherwise, move to the next pair and proceed with step 1
+3. If end of `intersections` reached, return `false`
