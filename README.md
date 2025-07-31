@@ -2,11 +2,11 @@
 
 Given:
 
-- An array of circles `circles`, each with center `(x, y)` and a `radius`
-- A direction vector `dir = (dx, dy)`
+- An array of circles `circles`, defined as `(x, y, r)`, where `x` and `y` are center coordinates and `r` is radius.
+- A direction vector `dir`
 - A width value `width`
 
-Determine whether there exists an infinite line of width `width` aligned with `dir` which does not intersect any of the circles in `circles`.
+Determine whether there exists an infinite strip of width `width` aligned with `dir` which does **not intersect** any of the given circles.
 
 # Solution
 
@@ -14,49 +14,25 @@ Determine whether there exists an infinite line of width `width` aligned with `d
 
 Rotate the coordinate space so that `dir` becomes aligned with horizontal axis `(1, 0)`.
 
-1. Calculate angle `angle` of `dir`
-2. Rotate `(x, y)` of each circle in `circles` by `angle`, store as `(x', y')`
+1. Calculate angle `angle` of vector `dir` (normalize if needed)
+2. Rotate each circle in `circles` by `angle`
 
-## Determine forbidden regions
+## Calculate circle intervals
 
-After rotation, the infinite line becomes aligned with horizontal axis `(1, 0)`, and each circle now occupies an interval `(top, bottom)` where `top = y' - radius` and `bottom = y' + radius`.
+After rotation, each circle now occupies a vertical interval. Create an array `intervals` and calculate interval for each circle:  `(top = y + r, bottom = y - r)`.
 
-1. Map `circles` to `intervals`
+## Sort circle intervals
 
-Create an `intervals` array. For each circle in `circles`, map it to an interval as follows: `(x', y', radius)` -> `(top = y' - radius, bottom = y' + radius)`.
+Sort `intervals` array by `bottom` value.
 
-```
-intervals[0] === (4, 6)
-intervals[1] === (1, 3)
-intervals[2] === (5, 7)
-```
+## Merge circle intervals
 
-2. Sort `intervals` by `a` coordinate
-
-```
-intervals[0] === (1, 3)
-intervals[1] === (4, 6)
-intervals[2] === (5, 7)
-```
-
-3. Unite intersecting intervals
-
-Create an `intersections` dynamic array. For intersections containing intervals in range `[n, m]`, add a new intersection to `intersections`, defined as follows: `(intervals[n].top, intervals[m].bottom)`.
-
-```
-intersections[0] === (1, 3)
-intersections[1] === (4, 7)
-```
-
-Explanation:
-
-- Interval `0` does not intersect with any other interval, so leave as is.
-- Intervals `1` and `2` intersect each other so unite them as follows: `(intervals[1].top, intervals[2].bottom)`
+Create a dynamic array `unions`. Merge overlapping circle intervals. Example: intervals `(1, 4)` and `(3, 5)` are merged into a single `(1, 5)` interval.
 
 ## Find a valid gap
 
-For each sequential pair of intersections `prev` and `next` in `intersections`:
+For each sequential pair `prev` and `next` in `unions`:
 
-1. Calculate `gap` value as follows: `next.bottom - prev.top`
-2. If `gap` is less than `width`, return `true`; otherwise, move to the next pair and proceed with step 1
-3. If end of `intersections` reached, return `false`
+1. Calculate `gap` value as follows: `next.top - prev.bottom`
+2. If `gap` is less than `width`, return `true`; otherwise, proceed to the next pair and repeat
+3. If end of `unions` reached, return `false`
