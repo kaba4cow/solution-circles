@@ -10,29 +10,32 @@ Determine whether there exists an infinite strip of width `width` aligned with `
 
 # Solution
 
-## Rotate world space
+## Step 1: Rotate world space
 
 Rotate the coordinate space so that `dir` becomes aligned with horizontal axis `(1, 0)`.
 
-1. Calculate angle `angle` of vector `dir` (normalize if needed)
-2. Rotate each circle in `circles` by `angle`
+- Calculate rotational angle `theta` from `dir` to `(1, 0)`
+- Rotate the center of each circle by `theta`
 
-## Calculate circle intervals
+## Step 2: Calculate circle intervals
 
-After rotation, each circle now occupies a vertical interval. Create an array `intervals` and calculate interval for each circle:  `(top = y + r, bottom = y - r)`.
+After rotation, each circle now occupies a vertical interval from `y - r` to `y + r`.
 
-## Sort circle intervals
+- For each circle, calculate its vertical interval and store it as `(bottom, top) = (y - r, y + r)`
+- Collect all intervals into an array `intervals`
 
-Sort `intervals` array by `bottom` value.
+## Step 3: Sort circle intervals
 
-## Merge circle intervals
+- Sort the `intervals` by their `bottom` coordinate.
 
-Create a dynamic array `unions`. Merge overlapping circle intervals. Example: intervals `(1, 4)` and `(3, 5)` are merged into a single `(1, 5)` interval.
+## Step 4: Merge overlapping intervals
 
-## Find a valid gap
+- Create an empty dynamic array `merged`
+- Iterate through sorted `intervals`, merging overlapping ones (intervals `(a, b)` and `(c, d)` overlap if `b >= c`)
 
-For each sequential pair `prev` and `next` in `unions`:
+## Step 5: Find a valid gap
 
-1. Calculate `gap` value as follows: `next.top - prev.bottom`
-2. If `gap` is less than `width`, return `true`; otherwise, proceed to the next pair and repeat
-3. If end of `unions` reached, return `false`
+- Check for vertical gaps between adjacent intervals in `merged`
+- For each pair of intervals `(a, b)` and `(c, d)` calculate the gap: `gap = c - d`
+- If any calculated `gap` is greater than or equal to `width`, return `true`
+- If no such `gap` exists, return `false`
